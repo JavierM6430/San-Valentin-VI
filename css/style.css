@@ -1,0 +1,132 @@
+:root {
+  --color-pink-logo: #ec4899;
+  --color-cian-logo: #22d3ee;
+  --color-bordo-main: #4e1114;
+  --color-azul-main: #0F172A;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+[x-cloak] {
+  display: none !important;
+}
+
+.body-bordo {
+  background-color: var(--color-bordo-main);
+}
+
+.vi-logo-intro {
+  font-size: clamp(6rem, 18vw, 10rem);
+  animation: logoAppear 8s forwards 0.5s;
+}
+
+.vi-logo {
+  font-family: 'Rammetto One';
+  color: #311238;
+  position: relative;
+  isolation: isolate;
+  line-height: 1;
+  display: inline-block;
+  overflow: visible;
+}
+
+.vi-logo::before {
+  content: "VI";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, var(--color-pink-logo), var(--color-cian-logo));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: 6px transparent;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.vi-logo-footer {
+  font-size: clamp(4rem, 8vw, 10rem);
+  opacity: .4;
+}
+
+/* Cortina oscura con degradado */
+.curtain {
+  background: linear-gradient(to bottom, rgba(0,0,0,0.9), rgb(0, 0, 0), rgba(0,0,0,0));
+  animation: curtainDown 6.5s ease-in-out forwards;
+}
+
+@keyframes curtainDown {
+  0% {
+    transform: translateY(0%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes logoAppear {
+  to { opacity: .8; }
+}
+
+.vi-message {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-48%, -60%);
+  color: white;
+  white-space: nowrap;
+}
+
+.btn-next {
+  opacity: .5;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  text-align: center;
+  color: white;
+  background: linear-gradient(to right, var(--color-pink-logo), var(--color-cian-logo));
+  padding: 0.4em .9em;
+  border-radius: 10px;
+  font-weight: bold;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-next:hover {
+  box-shadow: 0 0 20px rgba(236, 72, 153, 0.6);
+}
+
+.fa-chevron-right {
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: #fff;
+}
+
+.section-hero {
+  background-color: var(--color-azul-main);
+
+}
+
+.cursor {
+  animation: blink .7s steps(4) infinite;
+}
+
+@keyframes blink {
+  0%   { opacity: .4; }
+  49%  { opacity: .4; }
+  50%  { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+.section-music, footer {
+  background-color: var(--color-bordo-main);
+}
+
+.message-music {
+  background-color: #222222d7;
+  border-radius: 1.5rem;
+  box-shadow: 1px 1px 30px #000000;
+}
+
+footer {
+  padding-bottom: 2rem;
+}

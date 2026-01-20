@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/img/favicon/favicon.ico">
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Akatab:wght@400;500;600;700;800;900&family=Alatsi&family=Rammetto+One&family=Tangerine:wght@400;700&family=Tapestry&family=The+Nautigal:wght@400;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- FONT FROM GOOGLE FONTS FOR TAILWIND -->
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                    tapestry: ['Tapestry', 'serif'],
+                    akatab: ['Akatab', 'serif'],
+                    alatsi: ['Alatsi', 'sans-serif'],
+                    tangerine: ['Tangerine', 'sans-serif'],
+                    theNautigal: ['The Nautigal', 'cursive'],
+                    rammetto: ['Rammetto One', 'cursive'],
+                    }
+                }
+            }
+        }
+    </script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <!-- STORE ALPINE -->
+
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.store('app', {
+                step: 'intro',
+                showMain: false
+            })
+
+            Alpine.store('intro', {
+                introFinished: false
+            })
+        })
+    </script>
+
+    <link rel="stylesheet" href="/css/style.css">
+    <title>San Valentin VI</title>
+</head>
+
+<body 
+    x-data="{ 
+        soundOn: true, 
+        audio: null,
+
+        startMusic() {
+            if (!this.audio) {
+                this.audio = new Audio('/mp3/intro/Feel It.mp3');
+                this.audio.loop = true;
+                this.audio.volume = 1;
+            }
+
+            this.audio.muted = !this.soundOn;
+            this.audio.play();
+        },
+
+        fadeVolume() {
+            if (!this.audio) return;
+
+            const fade = setInterval(() => {
+                if (this.audio.volume > 0.05) {
+                    this.audio.volume -= 0.05;
+                } else {
+                    this.audio.volume = 0;
+                    this.audio.pause();
+                    clearInterval(fade);
+                }
+            }, 100);
+        }
+    }" 
+    :class="$store.app.showMain ? 'body-bordo' : 'bg-black'"
+    class="text-white bg-black m-0 min-h-screen flex flex-col">
+
+    <!-- BUTTON MUTED / UNMUTED -->
+
+    <button
+        x-show="$store.app.step !== 'main'"
+        @click.stop="soundOn = !soundOn ; if (audio) audio.muted = !soundOn"
+        class="fixed top-3 right-5 text-3xl z-50">
+        
+        <i 
+        class="fa-solid opacity-40" 
+        :class="soundOn ? 'fa-volume-high' : 'fa-volume-xmark'">
+        </i>
+    </button>
+
+    <!-- INTRO OVERLAY -->
+
+    <div
+        x-show="$store.app.step !== 'main'"
+        class="fixed inset-0 z-40"
+    >
+    
+        <!-- Intro: Haz click -->
+        <div
+        x-show="$store.app.step === 'intro'"
+        x-transition.opacity.duration.600ms
+        @click="$store.app.step = 'vi' ; startTyping() ; startMusic()"
+        class="h-screen bg-black flex items-center justify-center font-tapestry cursor-pointer"
+    >
+        <p class="text-3xl sm:text-4xl md:text-5xl">
+            Haz click
+        </p>
+        </div>
+
+        <!-- Logo VI WITH BOX BLACK -->
+        <div
+        x-show="$store.app.step === 'vi'"
+
+        x-transition:enter="transition-opacity duration-700"
+            x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100"
+
+            x-transition:leave="transition-opacity duration-2000"
+            x-transition:leave-start="opacity-100"
+            x-transition:leave-end="opacity-0"
+
+        class="vi-container h-screen flex items-center justify-center bg-black relative overflow-hidden"
+        >
+        <!-- BOX BLACK -->
+        <div class="curtain absolute top-0 left-0 w-full h-full z-20"></div>
+
+        <!-- LOGO -->
+        <h1 class="vi-logo vi-logo-intro text-center opacity-30">
+            VI
+            <span class="vi-message font-tangerine text-white text-6xl sm:text-8xl md:text-9xl"></span>
+        </h1>
+
+            <button 
+            x-show="$store.intro.introFinished"
+            @click="
+                fadeVolume();
+                setTimeout(() => {
+                $store.app.step = 'main';
+                $store.app.showMain = true;
+                }, 2300)
+            "
+
+            x-transition:enter="transition duration-700 linear"
+            x-transition:enter-start="opacity-0 translate-x-1"
+            x-transition:enter-end="opacity-50 translate-x-0"
+
+            class="btn-next absolute bottom-10 left-1/2 -translate-x-1/2">
+
+                <i class="fa-solid fa-chevron-right"></i>
+            
+            </button>
+        </div>
+    </div>
+
+
+    <!-- MAIN CONTENT -->
+
+    <main 
+        x-show="$store.app.showMain" 
+        x-transition:enter="transition-opacity duration-[1800ms] ease-out"
+        x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100"
+        x-cloak
+        class="min-h-screen flex-1 w-full"
+        >
+
+        <!-- SECTION PHRASE + IMAGES -->
+
+        <section 
+            class="section-hero min-h-screen flex relative items-center justify-center
+            px-6 sm:px-9 md:px-16 lg:px-24 xl:px-32"
+
+            x-data="sectionHero()">
+
+            <div class="relative z-20 pointer-events-none
+            h-[8rem] max-[420px]:h-[10rem]">
+                <h2 class="font-theNautigal text-white text-center leading-[0.95] 
+                            text-5xl sm:text-8xl md:text-9xl lg:text-[10rem]
+                            max-w-5xl lg:max-w-6xl mx-auto">
+                    <span x-text="displayedText"></span><span class="cursor font-sans text-3xl">|</span>
+                </h2>
+            </div>
+
+            <!-- Imágenes -->
+            <div class="absolute top-[14%] min-[680px]:top-[16%] sm:top-[15%]
+                        left-[6%] z-10 rotate-[-10deg]
+                        transition-opacity duration-[1800ms] ease-out"
+                :class="isVisible ? 'opacity-100' : 'opacity-0'">
+                <img 
+                    :src="img(0)"
+                    class="w-[20vw] sm:w-[22vw]
+                        max-w-[100px]
+                        sm:max-w-[120px]
+                        md:max-w-[140px]
+                        lg:max-w-[180px]
+                        xl:max-w-[220px]
+                        shadow-lg">
+            </div>
+
+
+            <div class="absolute top-[6%] min-[680px]:top-[10%] sm:top-[15%]
+                        left-1/2 -translate-x-1/2 z-10 rotate-[6deg]
+                        transition-opacity duration-[1800ms] ease-out"
+                :class="isVisible ? 'opacity-100' : 'opacity-0'">
+                <img
+                    :src="img(1)"
+                    class="w-[20vw] sm:w-[22vw]
+                        max-w-[100px]
+                        sm:max-w-[120px]
+                        md:max-w-[140px]
+                        lg:max-w-[180px]
+                        xl:max-w-[220px]
+                        shadow-lg">
+            </div>
+
+
+            <div class="absolute top-[14%] min-[680px]:top-[16%] sm:top-[15%]
+                        right-[7%] z-10 rotate-[10deg]
+                        transition-opacity duration-[1800ms] ease-out"
+                :class="isVisible ? 'opacity-100' : 'opacity-0'">
+                <img 
+                    :src="img(2)"
+                    class="w-[20vw] sm:w-[22vw]
+                        max-w-[100px]
+                        sm:max-w-[120px]
+                        md:max-w-[140px]
+                        lg:max-w-[180px]
+                        xl:max-w-[220px]
+                        shadow-lg">
+            </div>
+
+
+            <div class="absolute bottom-[18%] left-[8%] z-10 rotate-[8deg] 
+                        transition-opacity duration-[1800ms] ease-out"
+                :class="isVisible ? 'opacity-100' : 'opacity-0'">
+                <img
+                    :src="img(3)"
+                    class="w-[20vw] sm:w-[22vw]
+                            max-w-[100px]
+                            sm:max-w-[120px]
+                            md:max-w-[140px]
+                            lg:max-w-[180px]
+                            xl:max-w-[220px]
+                            shadow-lg">
+            </div>
+
+            <div class="absolute bottom-[10%] left-1/2 -translate-x-1/2 z-10 rotate-[6deg] 
+                        transition-opacity duration-[1800ms] ease-out"
+                :class="isVisible ? 'opacity-100' : 'opacity-0'">
+                <img
+                    :src="img(4)"
+                    class="w-[20vw] sm:w-[22vw]
+                            max-w-[100px]
+                            sm:max-w-[120px]
+                            md:max-w-[140px]
+                            lg:max-w-[180px]
+                            xl:max-w-[220px]
+                            shadow-lg">
+            </div>
+
+            <div class="absolute bottom-[18%] right-[8%] z-10 rotate-[-10deg] 
+                        transition-opacity duration-[1800ms] ease-out"
+                :class="isVisible ? 'opacity-100' : 'opacity-0'">
+                <img
+                    :src="img(5)"
+                    class="w-[20vw] sm:w-[22vw]
+                            max-w-[100px]
+                            sm:max-w-[120px]
+                            md:max-w-[140px]
+                            lg:max-w-[180px]
+                            xl:max-w-[220px]
+                            shadow-lg">
+            </div>
+        </section>
+
+        <!-- SECTION MUSIC -->
+        
+        <section 
+            x-data="{  
+                showIntro : true, 
+                showPlayer : false, 
+                
+                ...playerMusic(), 
+
+                startPlayer() {
+                    this.showIntro = false
+                    setTimeout(() => {
+                        this.showPlayer = true
+
+                    }, 3000)
+                }
+            }"
+
+            class="section-music min-h-screen flex relative items-center justify-center">
+
+            
+            <!-- IMAGES AND CARD MESSAGE MUSIC -->
+
+            <div 
+                x-show="showIntro"
+
+                x-transition:leave="transition ease-in duration-500"
+                x-transition:leave-start="opacity-100 scale-100"
+                x-transition:leave-end="opacity-0 scale-90" >
+
+                <div class="absolute inset-0 max-w-screen-lg mx-auto pointer-events-none">
+    
+                    <img src="/img/playList/odetari - logo.jpg"
+                        class="absolute
+                        w-24 sm:w-40 md:w-48 lg:w-56 xl:w-64
+                        -rotate-[-15deg]
+                        top-1/2 left-1/2
+                        -translate-x-[135%] -translate-y-[130%]
+                        opacity-1"/>
+    
+                    <img src="/img/playList/epic - logo.jpg"
+                        class="absolute 
+                        w-24 sm:w-40 md:w-48 lg:w-56 xl:w-64
+                        rotate-[-10deg]
+                        top-1/2 left-1/2
+                        translate-x-[60%] -translate-y-[130%]
+                        opacity-1" />
+    
+                    <img src="/img/playList/dardos - logo.jpg"
+                        class="absolute
+                        w-28 h-24 sm:w-40 md:w-48 lg:w-56 xl:w-64
+                        rotate-[-16deg]
+                        top-1/2 left-1/2
+                        -translate-x-[135%] translate-y-[15%]
+                        opacity-1" />
+    
+                    <img src="/img/playList/mai - logo.jpg"
+                        class="absolute
+                        w-28 sm:w-40 md:w-48 lg:w-56 xl:w-64
+                        rotate-[14deg]
+                        top-1/2 left-1/2
+                        translate-x-[20%] translate-y-[35%]
+                        opacity-1" />
+    
+                </div>
+                
+                <!-- CARD MESSAGE MUSIC -->
+
+                <div 
+                    class="message-music relative z-10 p-4 sm:p-6
+                            w-64 sm:w-72 md:w-80 text-center text-white">
+    
+                    <p class="font-alatsi md:text-2xl mb-4">¿Querés escuchar un poco de música amor?</p>
+    
+                    <button 
+                        @click="startPlayer()"
+                        class="text-white text-6xl sm:text-7xl md:text-8xl 
+                            hover:scale-110 transition">
+                            
+                        <i class="fa-solid fa-circle-play"></i></button>
+                </div>
+
+            </div>
+
+            <!-- CARD MUSIC PLAYER -->
+            
+            <div 
+                x-show="showPlayer"
+                x-transition:enter="transition ease-out duration-500"
+                x-transition:enter-start="opacity-0 translate-y-4"
+                x-transition:enter-end="opacity-100 translate-y-0"
+                            
+                class="playerMusic shadow-2xl w-[90%] max-w-[300px]
+                sm:max-w-[320px] md:max-w-[360px] lg:max-w-[420px]
+                xl:max-w-[460px] p-4 sm:p-6 bg-zinc-800 flex flex-col items-center rounded-3xl"
+                >
+
+                <!-- MUSIC (AUDIO) -->
+
+                <audio 
+                    x-ref="audio" 
+                    :src="currentSong().src" 
+                    @timeUpdate="updateProgress()"
+                    @ended="next()">
+                </audio>
+
+                <!-- IMAGE MUSIC -->
+
+                <img 
+                    class="rounded-2xl w-full max-w-[260px] sm:max-w-[300px] 
+                    md:max-w-[340px] lg:max-w-[380px] aspect-[4/3] object-cover mx-auto"
+
+                    :src="currentSong().cover"
+                    :alt="`cover of ${currentSong().title}`"
+                />
+                
+                <!-- NAME AND AUTHOR -->
+
+                <div class="my-4 w-full font-akatab text-left">
+                    <span 
+                        class="block text-2xl sm:text-3xl font-semibold text-white"
+                        x-text="currentSong().title"></span>
+                    <span 
+                        class="text-gray-400 text-sm"
+                        x-text="currentSong().artist"></span>
+                </div>
+
+                <!-- PROGRESS BAR -->
+
+                <div class="w-full mt-1">
+                    <!-- BAR -->
+                    <div 
+                        class="progress-bar relative h-1 bg-zinc-600 rounded-full cursor-pointer"
+                        @click="seek($event)">
+                        
+                        <!-- PROGRESS -->
+                        <div 
+                            class="absolute h-1 bg-white rounded-full"
+                            :style="`width: ${progressPercent()}%`">
+                        </div>
+
+                        <!-- CIRCLE -->
+                        <div
+                            class="absolute top-1/2
+                                    w-3 h-3 bg-white rounded-full
+                                    -translate-x-1/2 -translate-y-1/2"
+                            :style="`left: ${progressPercent()}%`"
+                            
+                            @mousedown="startDrag($event)"
+                            @mousemove.window="drag($event)"
+                            @mouseup.window="stopDrag()"
+
+                            @touchstart="startDrag($event)"
+                            @touchmove.window="drag($event)"
+                            @touchend.window="stopDrag()">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- NUMBERS -->
+
+                <div class="w-full text-gray-400 mt-2 font-akatab font-semibold flex justify-between text-sm">
+                    <span x-text="formatTime(currentTime)"></span>
+                    <span x-text="formatTime(duration)"></span>
+                </div>
+
+                <!-- BUTTONS   -->
+
+                <div class="flex items-center justify-center gap-6 text-white mt-4 mb-2">
+                    <button @click="prev()" aria-label="Anterior">
+                        <i class="fa-solid fa-backward-step text-3xl"></i>
+                    </button>
+
+                    <button @click="togglePlayPause()" aria-label="Pausar">
+                        <i 
+                        class="fa-solid text-6xl"
+                        :class="isPlaying ? 'fa-circle-pause' : 'fa-circle-play' "></i>
+                    </button>
+
+                    <button @click="next()" aria-label="Siguiente">
+                        <i class="fa-solid fa-forward-step text-3xl"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+
+    <footer
+        x-show="$store.app.showMain"
+        class="flex justify-center items-center"
+        >
+
+        <h3 class="vi-logo vi-logo-footer text-center opacity-10
+           text-6xl sm:text-7xl md:text-8xl lg:text-9xl">
+          VI
+        </h3>
+    </footer>
+
+    <script src="/js/playerMusic.js"></script>
+    <script src="/js/script.js"></script>
+</body>
+</html>
