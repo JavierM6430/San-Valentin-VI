@@ -113,7 +113,7 @@
         x-show="$store.app.step === 'intro'"
         x-transition.opacity.duration.600ms
         @click="$store.app.step = 'vi' ; startTyping() ; startMusic()"
-        class="h-screen bg-black flex items-center justify-center font-tapestry cursor-pointer"
+        class="min-h-[100svh] bg-black flex items-center justify-center font-tapestry cursor-pointer"
     >
         <p class="text-3xl sm:text-4xl md:text-5xl">
             Haz click
@@ -132,7 +132,7 @@
             x-transition:leave-start="opacity-100"
             x-transition:leave-end="opacity-0"
 
-        class="vi-container h-screen flex items-center justify-center bg-black relative overflow-hidden"
+        class="vi-container min-h-[100svh] flex items-center justify-center bg-black relative overflow-hidden"
         >
         <!-- BOX BLACK -->
         <div class="curtain absolute top-0 left-0 w-full h-full z-20"></div>
@@ -157,7 +157,7 @@
             x-transition:enter-start="opacity-0 translate-x-1"
             x-transition:enter-end="opacity-50 translate-x-0"
 
-            class="btn-next absolute bottom-10 left-1/2 -translate-x-1/2">
+            class="btn-next absolute bottom-[8svh] left-1/2 -translate-x-1/2">
 
                 <i class="fa-solid fa-chevron-right"></i>
             
