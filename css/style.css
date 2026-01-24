@@ -1,7 +1,7 @@
 :root {
   --color-pink-logo: #ec4899;
   --color-cian-logo: #22d3ee;
-  --color-bordo-main: #4e1114;
+  --color-bordo-main: #4a1527b9;
   --color-azul-main: #0F172A;
 }
 
@@ -101,11 +101,6 @@
   color: #fff;
 }
 
-.section-hero {
-  background-color: var(--color-azul-main);
-
-}
-
 .cursor {
   animation: blink .7s steps(4) infinite;
 }
@@ -117,14 +112,41 @@
   100% { opacity: 0; }
 }
 
-.section-music, footer {
-  background-color: var(--color-bordo-main);
+.icon-mode {
+  transition: transform 0.3s ease;
+}
+
+.icon-modeNormal {
+  transform: rotate(0deg);
+}
+
+.icon-modeDark {
+  transform: rotate(15deg);
 }
 
 .message-music {
-  background-color: #222222d7;
   border-radius: 1.5rem;
-  box-shadow: 1px 1px 30px #000000;
+  box-shadow: 1px 1px 15px 1px #000000;
+}
+
+.message-music-modeNormal {
+  border: solid 1px #99254c;
+}
+
+.message-music-modeDark {
+  border: solid 1px #183585;
+}
+
+.playerMusic {
+  box-shadow: 1px 1px 10px 4px #000000;
+}
+
+.playerMusic-dark {
+  border: solid 1px #062c9475;
+}
+
+.playerMusic-normal {
+  border: solid 1px #99254ca2;
 }
 
 footer {

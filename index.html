@@ -34,6 +34,22 @@
             }
         }
     </script>
+
+    <script>
+        export default {
+            theme: {
+                extend: {
+                    colors: {
+                        winePrimary: '#450A0D',
+                        bluePrimary: '#040A1A',
+                        wineSecundary: '#4A1527',
+                        blueSecundary: '#0A1838'
+                    },
+                },
+            },
+        }
+    </script>
+
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     
     <!-- STORE ALPINE -->
@@ -58,7 +74,8 @@
 <body 
     x-data="{ 
         soundOn: true, 
-        audio: null,
+        audio: null, 
+        darkMode: true,
 
         startMusic() {
             if (!this.audio) {
@@ -174,8 +191,24 @@
         x-transition:enter-start="opacity-0"
         x-transition:enter-end="opacity-100"
         x-cloak
-        class="min-h-screen flex-1 w-full"
+        class="min-h-screen flex-1 w-full transition-colors duration-500 ease-in-out"
+        :class="darkMode ? 'bg-[#040A1A]' : 'bg-[#450A0D]'"
         >
+
+        <!-- BUTTON DARKMODE -->
+
+        <button
+            @click="darkMode = !darkMode"
+            class="fixed top-3 right-5 text-3xl z-30 rounded-full">
+
+            <i 
+            class="fa-solid icon-mode"
+            :class="{
+                'fa-sun icon-modeDark': darkMode,
+                'fa-moon icon-modeNormal': !darkMode
+            }"></i>
+
+        </button>
 
         <!-- SECTION PHRASE + IMAGES -->
 
@@ -356,7 +389,11 @@
 
                 <div 
                     class="message-music relative z-10 p-4 sm:p-6
-                            w-64 sm:w-72 md:w-80 text-center text-white">
+                            w-64 sm:w-72 md:w-80 text-center text-white transition-colors duration-300 ease-in-out"
+                    :class="{
+                        'bg-[#081331b7] message-music-modeDark': darkMode,
+                        'bg-[#5a162da2] message-music-modeNormal': !darkMode
+                    }">
     
                     <p class="font-alatsi md:text-2xl mb-4">¿Querés escuchar un poco de música amor?</p>
     
@@ -378,10 +415,14 @@
                 x-transition:enter-start="opacity-0 translate-y-4"
                 x-transition:enter-end="opacity-100 translate-y-0"
                             
-                class="playerMusic shadow-2xl w-[90%] max-w-[300px]
+                class="playerMusic w-[90%] max-w-[300px]
                 sm:max-w-[320px] md:max-w-[360px] lg:max-w-[420px]
-                xl:max-w-[460px] p-4 sm:p-6 bg-zinc-800 flex flex-col items-center rounded-3xl"
-                >
+                xl:max-w-[460px] p-4 sm:p-6 flex flex-col items-center rounded-3xl 
+                transition-colors duration-300 ease-in-out"
+                :class="{
+                    'bg-[#081331b7] playerMusic-dark': darkMode,
+                    'bg-[#5a162da2] playerMusic-normal': !darkMode
+                }">
 
                 <!-- MUSIC (AUDIO) -->
 
@@ -477,7 +518,8 @@
 
     <footer
         x-show="$store.app.showMain"
-        class="flex justify-center items-center"
+        class="flex justify-center items-center transition-colors duration-300 ease-in-out"
+        :class="darkMode ? 'bg-[#040A1A]' : 'bg-[#450A0D]'"
         >
 
         <h3 class="vi-logo vi-logo-footer text-center opacity-10
